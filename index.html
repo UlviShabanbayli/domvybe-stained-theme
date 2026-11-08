@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#16120f">
+<title>Vigil · Appearance</title>
+<meta name="description" content="Vigil settings: choose the light you write in. Every theme is a pane of stained glass.">
+<script>
+  // storage: only dv87.v1.* survives (older dv87 keys wiped before first paint). The theme is the page's own, never the OS's.
+  (function () {
+    var HEX = ['#E8657F', '#6D8CFF', '#3FC28A', '#F2A93B', '#A77BF0', '#DCD6C8'], i = 1, d = document.documentElement;
+    try {
+      for (var k = localStorage.length - 1; k >= 0; k--) { var key = localStorage.key(k); if (key && key.indexOf('dv87') === 0 && key.indexOf('dv87.v1.') !== 0) localStorage.removeItem(key); }
+      var a = localStorage.getItem('dv87.v1.applied'); if (a !== null && HEX[+a]) i = +a;
+      var pv = JSON.parse(localStorage.getItem('dv87.v1.preview') || 'null'); if (pv && pv.until > Date.now() && HEX[pv.i]) i = pv.i;
+      if (localStorage.getItem('dv87.v1.tint') === '0') d.setAttribute('data-tint', 'off');
+    } catch (e) {}
+    d.style.setProperty('--acc', HEX[i]);
+    d.classList.add('js');
+    if (/[?&]nofx\b/.test(location.search)) d.classList.add('no-fx');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/stained.css">
+</head>
+<body>
+<a class="skip" href="#panes">Skip to the theme picker</a>
+<div class="stage" id="stage">
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="fallback" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="logo" href="#" aria-label="Vigil home"><svg viewBox="0 0 14 20" aria-hidden="true"><path d="M0 20V7a7 7 0 0 1 14 0v13z"/></svg>Vigil</a>
+    <nav aria-label="Main"><a href="#notes">Notes</a><a href="#journal">Journal</a><a href="#settings" aria-current="page">Settings</a><a href="#help">Help</a></nav>
+  </header>
+
+  <main class="main" id="main">
+    <div class="win" id="win">
+      <div class="fb-win" aria-hidden="true"><i class="fb-head"></i></div>
+      <div class="panes" id="panes" role="radiogroup" aria-label="Theme glass" aria-describedby="pick-hint"></div>
+    </div>
+
+    <section class="side" aria-labelledby="title">
+      <p class="eyebrow" id="eyebrow">Settings · Appearance</p>
+      <h1 id="title">Choose the <em>light</em><br> you write in.</h1>
+      <p class="lede">Every theme is a pane of glass. The one you pick lets the sun through, and the whole app takes on its colour.</p>
+      <p class="now" id="now" aria-live="polite"><b id="tn">Cobalt</b> <span id="td">for late reading, deep and calm</span></p>
+      <p class="sr" id="pick-hint">Arrow keys move between panes. The picked pane becomes your theme preview.</p>
+
+      <div class="card" id="card">
+        <div class="row">
+          <div class="txt"><span id="l-tint">Tint the editor</span><small>Margins and headings take the glass colour</small></div>
+          <button class="sw" id="tint" type="button" role="switch" aria-checked="true" aria-labelledby="l-tint"><i></i></button>
+        </div>
+        <div class="row">
+          <div class="txt"><span id="l-sun">Follow the sun</span><small id="sun-note">Warmer panes at dusk, cooler at dawn</small></div>
+          <button class="sw" id="sun" type="button" role="switch" aria-checked="false" aria-labelledby="l-sun" aria-describedby="sun-note"><i></i></button>
+        </div>
+        <div class="row">
+          <div class="txt"><span>Accent</span><small>Links, cursor and highlights</small></div>
+          <button class="chip" id="chip" type="button" aria-label="Copy accent colour #6D8CFF"><span id="chip-t">#6D8CFF</span></button>
+        </div>
+        <div class="acts">
+          <button class="btn p" id="apply" type="button">
+            <span class="spin" aria-hidden="true"></span>
+            <svg class="tick" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.6 3.6 7.4-8.2"/></svg>
+            <span class="lbl" id="apply-l">Apply theme</span>
+          </button>
+          <button class="btn s" id="preview" type="button"><span class="lbl" id="preview-l">Preview for a day</span></button>
+        </div>
+        <div class="status">
+          <p class="msg" id="msg" role="status" aria-live="polite">Tap a pane to try its light. Nothing changes until you apply.</p>
+          <button class="link" id="revert" type="button" hidden>Revert</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="cap"><b>22 · Stained theme</b><span>A theme picker of stained-glass panes</span><i>Pick a pane and its coloured light falls across the page like sun through a church window.</i></div>
+    <div class="brandmark">Code with Ulvi</div>
+  </footer>
+  <i class="fb-pool" id="fbpool" aria-hidden="true"></i>
+  <canvas id="light" aria-hidden="true"></canvas>
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
